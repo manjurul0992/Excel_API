@@ -1,0 +1,148 @@
+﻿@model Patient_Models.ViewModels.PatientInputModel
+@{
+    ViewData["Title"] = "EditPatient";
+}
+
+
+
+
+
+<style>
+    #ncdsContainer,
+    #allergiesContainer {
+        height: 30vh;
+        overflow-y: scroll;
+        border: 1px solid grey;
+    }
+
+    td:hover {
+        background-color: lightblue;
+        cursor: pointer;
+    }
+
+    .table-selected {
+        background-color: darkblue;
+        color: white;
+        font-weight: 700;
+    }
+</style>
+
+
+
+<h1 class="text-center text-primary" style="font-family:'Times New Roman', Times, serif; font-weight:600; font-size: 2em;">Edit Patient Data</h1>
+<div class="col-10 m-auto" style="border:4px solid skyblue; padding: 2em; height:110vh">
+
+    <div class="row">
+        <div class="col-12">
+            <form id="patientEditForm" asp-controller="Patient" asp-action="EditPatientData">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="PatientId" />
+
+                <div class="col-12 m-auto d-flex justify-content-between mb-2" style="padding-left:3em; height:40px;">
+                    <label class="col-2" asp-for="PatientName">Patient Name<span style="color:red;">*</span></label>
+                    <input class="col-8" asp-for="PatientName" required />
+                    <span asp-validation-for="PatientName" class="col-2 text-danger"></span>
+                </div>
+
+                <div class="col-12 m-auto d-flex justify-content-between mb-2" style="padding-left:3em; height:40px;">
+                    <label class="col-2" asp-for="DiseaseId">Disease Name<span style="color:red;">*</span></label>
+                    <select asp-for="DiseaseId" asp-items="@ViewBag.diseases" class="col-8">
+                        <option value=""></option>
+                    </select>
+                    <span asp-validation-for="DiseaseId" class="col-2 text-danger"></span>
+                </div>
+
+                <div class="col-12 m-auto d-flex justify-content-between mb-2" style="padding-left:3em; height:40px;">
+                    <label class="col-2" asp-for="Epilepsy">Epilepsy<span style="color:red;">*</span></label>
+                    <select asp-for="Epilepsy" asp-items="@ViewBag.epilepsy" class="col-8">
+                    </select>
+                    <span asp-validation-for="Epilepsy" class="col-2 text-danger"></span>
+                </div>
+
+                <div class="col-12 m-auto row mb-lg-5" style="padding-left:3em; height:40px; padding-bottom: 10rem;">
+                    <label class="col-2">Other NCDs</label>
+                    <div class="col-3" id="ncdsContainer">
+                        <table id="tblNcdList">
+                            <tbody>
+                                @if (ViewBag.ncds != null)
+                                {
+                                    foreach (var ncd in ViewBag.ncds)
+                                    {
+                                        <tr>
+                                            <td value="@ncd.NCD_Id">
+                                                @ncd.NCD_Name
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-2 m-auto">
+                        <button id="btnNcdAdd" type="button" class="btn btn-outline-light" style="width:110px; border:1px solid grey; margin-bottom:10px;color:black;" onclick="AddPatientNcds();">Add ></button>
+                        <button id="btnNcdRemove" type="button" class="btn btn-outline-light" style="width:110px; border:1px solid grey;color:black;" onclick="RemovePatientNcds();"> < Remove</button>
+                    </div>
+                    <div class="col-3" id="ncdsContainer">
+                        <table id="tblAddedNcdList">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <span asp-validation-for="Epilepsy" class="col-2 text-danger"></span>
+                </div>
+
+                <div class="col-12 m-auto row" style="padding-left:3em; height:40px;">
+                    <label class="col-2">Allergies<span style="color:red;">*</span></label>
+                    <div class="col-3" id="allergiesContainer">
+                        <table id="tblAllergyList">
+                            <tbody>
+                                @if (ViewBag.allergies != null)
+                                {
+                                    foreach (var allergy in ViewBag.allergies)
+                                    {
+                                        <tr>
+                                            <td value="@allergy.AllergyId">
+                                                @allergy.AllergyName
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-2 m-auto">
+                        <button type="button" id="btnAllergyAdd" class="btn btn-outline-light" style="width:110px; border:1px solid grey; margin-bottom:10px;color:black;" onclick="AddPatientAllergies();">Add ></button>
+                        <button type="button" id="btnAllergyRemove" class="btn btn-outline-light" style="width:110px; border:1px solid grey;color:black;" onclick="RemovePatientAllergies();"> < Remove</button>
+                    </div>
+                    <div class="col-3" id="allergiesContainer">
+                        <table id="tblAddedAllergyList">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <span asp-validation-for="Epilepsy" class="col-2 text-danger"></span>
+                </div>
+
+                <div class=" d-flex justify-content-center">
+                    <input type="submit" onclick="submitForm();" value="Update" class="fw-bold fs-3 btn btn-primary" style="margin-top:13rem;" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @*<div>
+    <a asp-controller="Patient" asp-action="AllPatients">Back to List</a>
+    </div>*@
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js"></script>
+
+}

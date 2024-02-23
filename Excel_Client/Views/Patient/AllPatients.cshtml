@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Patient_Models.ViewModels.PatientDetailsViewModel>
+@{
+    ViewData["Title"] = "AllPatients";
+}
+
+<style>
+    table thead tr th,
+    table tbody tr td {
+        text-align: center;
+    }
+</style>
+
+<div class="container mt-4">
+    <h1 class="col-12 text-center font-weight-bold text-muted">Patient List</h1>
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-controller="Patient" asp-action="InsertPatient" class="btn btn-outline-primary">Create New</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-light">
+            <thead class="table-success">
+                <tr>
+                    <th>
+                        Patient ID
+                    </th>
+                    <th>
+                        Patient Name
+                    </th>
+                    <th>
+                        Epilepsy Status
+                    </th>
+                    <th>
+                        Main Disease
+                    </th>
+                    <th>
+                        NCDs
+                    </th>
+                    <th>
+                        Allergies
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PatientId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PatientName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Epilepsy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DiseaseId)
+                        </td>
+                        <td>
+                            @foreach (var ncdName in item.NCD_Names)
+                            {
+                                <p>@ncdName</p>
+                            }
+                        </td>
+                        <td>
+                            @foreach (var allergyName in item.Allergy_Names)
+                            {
+                                <p>@allergyName</p>
+                            }
+                        </td>
+
+                        <td>
+                            @Html.ActionLink("Edit", "EditPatient", new { id = item.PatientId }, new { @class = "btn btn-sm btn-outline-warning" })
+                            @Html.ActionLink("Delete", "DeletePatient", new { id = item.PatientId }, new { @class = "btn btn-sm btn-outline-danger" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
