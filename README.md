@@ -32,7 +32,7 @@ To access and run the Patient Information Portal project locally, follow these s
 
 5. **Access the Application:**
    - Open your web browser and navigate to the specified localhost address.
-![image](https://github.com/manjurul0992/Excel_API/exce.png)
+![Project Logo](./exce.png)
 
 ## Features
 
